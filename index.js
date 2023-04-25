@@ -49,4 +49,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.listen(3001);
+app.listen({
+  host: '0.0.0.0',
+  port: process.env.PORT || 3001,
+});
