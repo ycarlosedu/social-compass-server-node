@@ -25,8 +25,6 @@ export const AuthMiddleware = async (
 
     const jwt = decode(token);
     request.userId = jwt?.sub;
-
-    return next();
   } catch (error) {
     return response.status(401).send({ message: "Error validating token" });
   }

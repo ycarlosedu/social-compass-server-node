@@ -8,6 +8,16 @@ export const server = Fastify({
 
 // server.use(cors())
 
+server.addHook('onRequest', (req, reply, done) => {
+  req.log.info({body: req.body, headers: req.headers, params: req.params}, 'received request')
+  done()
+})
+
+server.addHook('onSend', (req, reply, payload, done) => {
+  req.log.info({ payload, statusCode: reply.raw.statusCode }, 'response sent')
+  done()
+})
+
 server.register(Auth, { prefix: "/auth" });
 server.register(Users, { prefix: "/users" });
 server.register(Posts, { prefix: "/posts" });
