@@ -1,13 +1,14 @@
 import "dotenv/config";
 import Fastify from "fastify";
-import { Comments, Posts, Users } from "./routes";
+import { Auth, Comments, Posts, Users } from "./routes";
 
 export const server = Fastify({
   logger: true,
 });
 
-// server.post('/', userController.create)
+// server.use(cors())
 
+server.register(Auth, { prefix: "/auth" });
 server.register(Users, { prefix: "/users" });
 server.register(Posts, { prefix: "/posts" });
 server.register(Comments, { prefix: "/comments" });

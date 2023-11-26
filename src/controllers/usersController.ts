@@ -1,22 +1,16 @@
+import { FastifyReply, FastifyRequest } from "fastify";
 import prismaClient from "../database/prismaClient";
 
+type GenericParams = {
+  id: string;
+};
+
+type GenericRequest = FastifyRequest & {
+  params: GenericParams;
+};
+
 export class UserController {
-  async create(request: any, reply: any) {
-    const { name, username, email, password } = request.body;
-
-    const user = await prismaClient.user.create({
-      data: {
-        name,
-        username,
-        email,
-        password,
-      },
-    });
-
-    return reply.status(200).send(user);
-  }
-
-  async getAll(request: any, reply: any) {
+  async getAll(request: FastifyRequest, reply: FastifyReply) {
     const users = await prismaClient.user.findMany({
       select: {
         id: true,
@@ -24,12 +18,12 @@ export class UserController {
         username: true,
         email: true,
         image: true,
-      }
+      },
     });
     return reply.status(200).send(users);
   }
 
-  async getByID(request: any, reply: any) {
+  async getByID(request: GenericRequest, reply: FastifyReply) {
     try {
       const id = request.params.id;
 
@@ -38,33 +32,49 @@ export class UserController {
           id,
         },
         include: {
-          Posts: {
+          posts: {
             include: {
               author: {
                 select: {
                   image: true,
                   name: true,
-                  id: true
-                }
+                  id: true,
+                },
               },
-              Comment: {
+              comments: {
                 include: {
                   author: {
                     select: {
                       image: true,
                       name: true,
-                      id: true
-                    }
+                      id: true,
+                    },
                   },
-                }
+                },
               },
-            }
+            },
           },
-        }
+        },
       });
       return reply.status(200).send(user);
     } catch (error) {
-      return reply.status(400).json({ message: "ID inválido" });
+      return reply.status(400).send({ message: "Invalid ID" });
+    }
+  }
+
+  async delete(request: GenericRequest, reply: FastifyReply) {
+    const { id } = request.params;
+    try {
+      await prismaClient.user.delete({
+        where: {
+          id,
+        },
+      });
+      return reply.status(200).send({ message: "User deleted!" });
+    } catch (error) {
+      return reply
+        .status(400)
+        .send({ message: "Error deleting user, try again!" });
     }
   }
 }
