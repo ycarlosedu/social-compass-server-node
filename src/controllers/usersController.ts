@@ -9,6 +9,19 @@ type GenericRequest = FastifyRequest & {
   params: GenericParams;
 };
 
+type BodyRequest = FastifyRequest & {
+  params: GenericParams;
+  body: {
+    name: string, 
+    occupation: string, 
+    sex: "Male" | "Female", 
+    birthdate: string, 
+    address: string, 
+    phone: string, 
+    image: Buffer,
+  }
+};
+
 export class UserController {
   async getAll(request: FastifyRequest, reply: FastifyReply) {
     const users = await prismaClient.user.findMany({
@@ -21,6 +34,28 @@ export class UserController {
       },
     });
     return reply.status(200).send(users);
+  }
+
+  async update(request: BodyRequest, reply: FastifyReply) {
+    const { id } = request.params;
+    const { name, occupation, sex, birthdate, address, phone, image } = request.body;
+
+    const user = await prismaClient.user.update({
+      where: {
+        id,
+      },
+      data: {
+        name, 
+        occupation, 
+        sex, 
+        birthdate, 
+        address, 
+        phone, 
+        image
+      },
+    });
+
+    return reply.status(200).send(user);
   }
 
   async getByID(request: GenericRequest, reply: FastifyReply) {

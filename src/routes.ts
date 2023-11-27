@@ -37,6 +37,8 @@ export function Users(
 
   api.get("/:id", userController.getByID);
 
+  api.put("/:id", userController.update);
+
   api.delete("/:id", userController.delete);
 
   done();
