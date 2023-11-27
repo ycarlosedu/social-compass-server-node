@@ -88,7 +88,7 @@ export class PostController {
       },
       data: {
         likes: {
-          increment: 1
+          increment: 1,
         },
       },
     });

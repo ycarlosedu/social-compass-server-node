@@ -12,14 +12,14 @@ type GenericRequest = FastifyRequest & {
 type BodyRequest = FastifyRequest & {
   params: GenericParams;
   body: {
-    name: string, 
-    occupation: string, 
-    sex: "Male" | "Female", 
-    birthdate: string, 
-    address: string, 
-    phone: string, 
-    image: string,
-  }
+    name: string;
+    occupation: string;
+    sex: "Male" | "Female";
+    birthdate: string;
+    address: string;
+    phone: string;
+    image: string;
+  };
 };
 
 export class UserController {
@@ -38,20 +38,21 @@ export class UserController {
 
   async update(request: BodyRequest, reply: FastifyReply) {
     const { id } = request.params;
-    const { name, occupation, sex, birthdate, address, phone, image } = request.body;
+    const { name, occupation, sex, birthdate, address, phone, image } =
+      request.body;
 
     const user = await prismaClient.user.update({
       where: {
         id,
       },
       data: {
-        name, 
-        occupation, 
-        sex, 
-        birthdate: new Date(birthdate).toISOString(), 
-        address, 
-        phone, 
-        image
+        name,
+        occupation,
+        sex,
+        birthdate: new Date(birthdate).toISOString(),
+        address,
+        phone,
+        image,
       },
     });
 

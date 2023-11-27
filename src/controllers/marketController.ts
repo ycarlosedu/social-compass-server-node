@@ -9,7 +9,7 @@ type GenericRequest = FastifyRequest & {
   params: GenericParams;
   body: {
     userId: string;
-  }
+  };
 };
 
 type BodyRequest = FastifyRequest & {
@@ -55,13 +55,13 @@ export class MarketController {
   }
 
   async create(request: BodyRequest, reply: FastifyReply) {
-    const { name, description, price, image, sellerId} = request.body;
+    const { name, description, price, image, sellerId } = request.body;
 
     const item = await prismaClient.marketPlace.create({
       data: {
         name,
         description,
-        price, 
+        price,
         image,
         sellerId,
       },
@@ -82,7 +82,7 @@ export class MarketController {
         name,
         description,
         price,
-        image
+        image,
       },
     });
 
@@ -106,10 +106,10 @@ export class MarketController {
             select: {
               email: true,
               name: true,
-              image: true
-            }
+              image: true,
+            },
           },
-        }
+        },
       });
       return reply.status(200).send(item);
     } catch (error) {

@@ -6,6 +6,18 @@ import { PostController } from "./controllers/postsController";
 import { UserController } from "./controllers/usersController";
 import { AuthMiddleware } from "./middleware/auth";
 import { LoginSchema, RegisterSchema } from "./validateSchemas/auth";
+import {
+  CreateCommentSchema,
+  UpdateCommentSchema,
+} from "./validateSchemas/comments";
+import { RequestWithID } from "./validateSchemas/default";
+import {
+  BuyMarketSchema,
+  CreateMarketSchema,
+  UpdateMarketSchema,
+} from "./validateSchemas/market";
+import { CreatePostSchema, UpdatePostSchema } from "./validateSchemas/posts";
+import { UpdateUserSchema } from "./validateSchemas/users";
 import { validatorCompiler } from "./validateSchemas/validator";
 
 const authController = new AuthController();
@@ -19,9 +31,17 @@ export function Auth(
   opts: FastifyServerOptions,
   done: HookHandlerDoneFunction,
 ) {
-  api.post("/login", { schema: LoginSchema, validatorCompiler }, authController.login);
+  api.post(
+    "/login",
+    { schema: LoginSchema, validatorCompiler },
+    authController.login,
+  );
 
-  api.post("/register", { schema: RegisterSchema, validatorCompiler }, authController.register);
+  api.post(
+    "/register",
+    { schema: RegisterSchema, validatorCompiler },
+    authController.register,
+  );
 
   done();
 }
@@ -35,11 +55,23 @@ export function Users(
 
   api.get("/", userController.getAll);
 
-  api.get("/:id", userController.getByID);
+  api.get(
+    "/:id",
+    { schema: RequestWithID, validatorCompiler },
+    userController.getByID,
+  );
 
-  api.put("/:id", userController.update);
+  api.put(
+    "/:id",
+    { schema: UpdateUserSchema, validatorCompiler },
+    userController.update,
+  );
 
-  api.delete("/:id", userController.delete);
+  api.delete(
+    "/:id",
+    { schema: RequestWithID, validatorCompiler },
+    userController.delete,
+  );
 
   done();
 }
@@ -51,15 +83,31 @@ export function Posts(
 ) {
   api.addHook("preHandler", AuthMiddleware);
 
-  api.post("/", postController.create);
+  api.post(
+    "/",
+    { schema: CreatePostSchema, validatorCompiler },
+    postController.create,
+  );
 
   api.get("/", postController.getAll);
 
-  api.put("/:id", postController.update);
+  api.put(
+    "/:id",
+    { schema: UpdatePostSchema, validatorCompiler },
+    postController.update,
+  );
 
-  api.patch("/like/:id", postController.like);
+  api.patch(
+    "/like/:id",
+    { schema: RequestWithID, validatorCompiler },
+    postController.like,
+  );
 
-  api.delete("/:id", postController.delete);
+  api.delete(
+    "/:id",
+    { schema: RequestWithID, validatorCompiler },
+    postController.delete,
+  );
 
   done();
 }
@@ -71,11 +119,23 @@ export function Comments(
 ) {
   api.addHook("preHandler", AuthMiddleware);
 
-  api.post("/", commentController.create);
+  api.post(
+    "/",
+    { schema: CreateCommentSchema, validatorCompiler },
+    commentController.create,
+  );
 
-  api.put("/:id", commentController.update);
+  api.put(
+    "/:id",
+    { schema: UpdateCommentSchema, validatorCompiler },
+    commentController.update,
+  );
 
-  api.delete("/:id", commentController.delete);
+  api.delete(
+    "/:id",
+    { schema: RequestWithID, validatorCompiler },
+    commentController.delete,
+  );
 
   done();
 }
@@ -89,15 +149,35 @@ export function MarketItems(
 
   api.get("/", marketController.getAll);
 
-  api.get("/:id", marketController.getById);
+  api.get(
+    "/:id",
+    { schema: RequestWithID, validatorCompiler },
+    marketController.getById,
+  );
 
-  api.post("/", marketController.create);
+  api.post(
+    "/",
+    { schema: CreateMarketSchema, validatorCompiler },
+    marketController.create,
+  );
 
-  api.put("/:id", marketController.update);
+  api.put(
+    "/:id",
+    { schema: UpdateMarketSchema, validatorCompiler },
+    marketController.update,
+  );
 
-  api.patch("/buy/:id", marketController.buy);
+  api.patch(
+    "/buy/:id",
+    { schema: BuyMarketSchema, validatorCompiler },
+    marketController.buy,
+  );
 
-  api.delete("/:id", marketController.delete);
+  api.delete(
+    "/:id",
+    { schema: RequestWithID, validatorCompiler },
+    marketController.delete,
+  );
 
   done();
 }

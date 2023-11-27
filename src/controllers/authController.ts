@@ -3,7 +3,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { sign } from "jsonwebtoken";
 import prismaClient from "../database/prismaClient";
 
-type LoginRequest = FastifyRequest & {
+export type LoginRequest = FastifyRequest & {
   body: {
     username: string;
     password: string;

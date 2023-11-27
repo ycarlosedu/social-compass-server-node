@@ -1,6 +1,6 @@
 export default {
-  strict: false,
-  abortEarly: false, // return all errors
+  strict: true,
+  abortEarly: true, // return all errors
   stripUnknown: true, // remove additional properties
-  recursive: true
-}
+  recursive: true,
+};
