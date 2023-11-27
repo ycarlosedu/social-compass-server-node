@@ -4,6 +4,8 @@ import { CommentController } from "./controllers/commentsController";
 import { PostController } from "./controllers/postsController";
 import { UserController } from "./controllers/usersController";
 import { AuthMiddleware } from "./middleware/auth";
+import { LoginSchema, RegisterSchema } from "./validateSchemas/auth";
+import { validatorCompiler } from "./validateSchemas/validator";
 
 const authController = new AuthController();
 const userController = new UserController();
@@ -15,9 +17,9 @@ export function Auth(
   opts: FastifyServerOptions,
   done: HookHandlerDoneFunction,
 ) {
-  api.post("/login", authController.login);
+  api.post("/login", { schema: LoginSchema, validatorCompiler }, authController.login);
 
-  api.post("/register", authController.register);
+  api.post("/register", { schema: RegisterSchema, validatorCompiler }, authController.register);
 
   done();
 }

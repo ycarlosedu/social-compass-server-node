@@ -52,13 +52,7 @@ export class AuthController {
   }
 
   async register(request: RegisterRequest, reply: FastifyReply) {
-    const { name, username, email, password, confirmPassword } = request.body;
-
-    if (password !== confirmPassword) {
-      return reply.status(422).send({
-        message: "Passwords not match",
-      });
-    }
+    const { name, username, email, password } = request.body;
 
     const passwordHash = await hash(password, 8);
 
