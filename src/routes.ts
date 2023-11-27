@@ -1,6 +1,7 @@
 import { FastifyServerOptions, HookHandlerDoneFunction } from "fastify";
 import { AuthController } from "./controllers/authController";
 import { CommentController } from "./controllers/commentsController";
+import { MarketController } from "./controllers/marketController";
 import { PostController } from "./controllers/postsController";
 import { UserController } from "./controllers/usersController";
 import { AuthMiddleware } from "./middleware/auth";
@@ -11,6 +12,7 @@ const authController = new AuthController();
 const userController = new UserController();
 const postController = new PostController();
 const commentController = new CommentController();
+const marketController = new MarketController();
 
 export function Auth(
   api: any,
@@ -70,6 +72,24 @@ export function Comments(
   api.put("/:id", commentController.update);
 
   api.delete("/:id", commentController.delete);
+
+  done();
+}
+
+export function MarketItems(
+  api: any,
+  opts: FastifyServerOptions,
+  done: HookHandlerDoneFunction,
+) {
+  api.addHook("preHandler", AuthMiddleware);
+
+  api.post("/", marketController.create);
+
+  api.put("/:id", marketController.update);
+
+  api.patch("/:id", marketController.buy);
+
+  api.delete("/:id", marketController.delete);
 
   done();
 }
