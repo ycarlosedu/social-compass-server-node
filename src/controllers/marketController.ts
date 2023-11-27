@@ -19,13 +19,43 @@ type BodyRequest = FastifyRequest & {
     description: string;
     price: number;
     image: Buffer;
-    userId: string;
+    sellerId: string;
   };
 };
 
 export class MarketController {
+  async getAll(request: FastifyRequest, reply: FastifyReply) {
+    const items = await prismaClient.marketPlace.findMany();
+    return reply.status(200).send(items);
+  }
+
+  async getById(request: GenericRequest, reply: FastifyReply) {
+    const { id } = request.params;
+
+    const items = await prismaClient.marketPlace.findUnique({
+      where: { id },
+      include: {
+        seller: {
+          select: {
+            image: true,
+            name: true,
+            id: true,
+          },
+        },
+        buyer: {
+          select: {
+            image: true,
+            name: true,
+            id: true,
+          },
+        },
+      },
+    });
+    return reply.status(200).send(items);
+  }
+
   async create(request: BodyRequest, reply: FastifyReply) {
-    const { name, description, price, image, userId} = request.body;
+    const { name, description, price, image, sellerId} = request.body;
 
     const item = await prismaClient.marketPlace.create({
       data: {
@@ -33,7 +63,7 @@ export class MarketController {
         description,
         price, 
         image,
-        sellerId: userId,
+        sellerId,
       },
     });
 
@@ -69,6 +99,7 @@ export class MarketController {
         },
         data: {
           buyerId: userId,
+          vendido: true,
         },
         include: {
           buyer: {

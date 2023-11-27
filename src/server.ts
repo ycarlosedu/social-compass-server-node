@@ -1,6 +1,6 @@
 import "dotenv/config";
 import Fastify from "fastify";
-import { Auth, Comments, Posts, Users } from "./routes";
+import { Auth, Comments, MarketItems, Posts, Users } from "./routes";
 
 export const server = Fastify({
   logger: true,
@@ -22,6 +22,7 @@ server.register(Auth, { prefix: "/auth" });
 server.register(Users, { prefix: "/users" });
 server.register(Posts, { prefix: "/posts" });
 server.register(Comments, { prefix: "/comments" });
+server.register(MarketItems, { prefix: "/market" });
 
 const port = parseInt(process.env.PORT || "3001");
 

@@ -55,6 +55,8 @@ export function Posts(
 
   api.put("/:id", postController.update);
 
+  api.patch("/like/:id", postController.like);
+
   api.delete("/:id", postController.delete);
 
   done();
@@ -83,11 +85,15 @@ export function MarketItems(
 ) {
   api.addHook("preHandler", AuthMiddleware);
 
+  api.get("/", marketController.getAll);
+
+  api.get("/:id", marketController.getById);
+
   api.post("/", marketController.create);
 
   api.put("/:id", marketController.update);
 
-  api.patch("/:id", marketController.buy);
+  api.patch("/buy/:id", marketController.buy);
 
   api.delete("/:id", marketController.delete);
 

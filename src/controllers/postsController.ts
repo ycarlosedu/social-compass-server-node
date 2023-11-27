@@ -79,6 +79,23 @@ export class PostController {
     return reply.status(200).send(post);
   }
 
+  async like(request: GenericRequest, reply: FastifyReply) {
+    const { id } = request.params;
+
+    const post = await prismaClient.post.update({
+      where: {
+        id,
+      },
+      data: {
+        likes: {
+          increment: 1
+        },
+      },
+    });
+
+    return reply.status(200).send(post);
+  }
+
   async delete(request: GenericRequest, reply: FastifyReply) {
     const { id } = request.params;
     try {
