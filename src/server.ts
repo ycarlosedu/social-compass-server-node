@@ -18,6 +18,10 @@ server.addHook('onSend', (req, reply, payload, done) => {
   done()
 })
 
+server.get("/", (request, reply) => {
+  return reply.send("Social Compass API");
+})
+
 server.register(Auth, { prefix: "/auth" });
 server.register(Users, { prefix: "/users" });
 server.register(Posts, { prefix: "/posts" });

@@ -18,7 +18,7 @@ type BodyRequest = FastifyRequest & {
     birthdate: string, 
     address: string, 
     phone: string, 
-    image: Buffer,
+    image: string,
   }
 };
 
@@ -48,7 +48,7 @@ export class UserController {
         name, 
         occupation, 
         sex, 
-        birthdate, 
+        birthdate: new Date(birthdate).toISOString(), 
         address, 
         phone, 
         image

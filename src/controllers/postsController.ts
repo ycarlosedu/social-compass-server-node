@@ -14,7 +14,7 @@ type BodyRequest = FastifyRequest & {
   body: {
     text: string;
     location: string;
-    image?: Buffer;
+    image?: string;
     authorId: string;
   };
 };

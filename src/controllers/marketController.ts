@@ -18,7 +18,7 @@ type BodyRequest = FastifyRequest & {
     name: string;
     description: string;
     price: number;
-    image: Buffer;
+    image?: string;
     sellerId: string;
   };
 };

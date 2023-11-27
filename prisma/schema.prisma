@@ -30,7 +30,7 @@ model Post {
   text      String
   location  String
   likes     Decimal   @default(0)
-  image     Bytes?
+  image     String?
   authorId  String
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -47,7 +47,7 @@ model User {
   email                String        @unique
   password             String
   birthdate            DateTime?
-  image                Bytes?
+  image                String?
   sex                  Sex?
   address              String?
   phone                String?
@@ -66,7 +66,7 @@ model MarketPlace {
   name        String
   description String
   price       Float
-  image       Bytes?
+  image       String?
   vendido     Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
