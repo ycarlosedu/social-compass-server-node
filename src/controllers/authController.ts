@@ -17,6 +17,7 @@ type RegisterRequest = FastifyRequest & {
     confirmPassword: string;
     email: string;
     name: string;
+    birthdate: string;
   };
 };
 
@@ -52,7 +53,7 @@ export class AuthController {
   }
 
   async register(request: RegisterRequest, reply: FastifyReply) {
-    const { name, username, email, password } = request.body;
+    const { name, username, email, password, birthdate } = request.body;
 
     const passwordHash = await hash(password, 8);
 
@@ -62,6 +63,7 @@ export class AuthController {
         username,
         email,
         password: passwordHash,
+        birthdate: new Date(birthdate).toISOString(),
       },
     });
 

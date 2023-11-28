@@ -14,6 +14,7 @@ export const RegisterSchema = {
     .object({
       username: yup.string().required(),
       name: yup.string().required(),
+      birthdate: yup.string().required(),
       email: yup.string().email().required(),
       password: yup.string().required(),
       confirmPassword: yup
