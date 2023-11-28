@@ -1,12 +1,15 @@
+import cors from '@fastify/cors';
 import "dotenv/config";
 import Fastify from "fastify";
 import { Auth, Comments, MarketItems, Posts, Users } from "./routes";
 
 export const server = Fastify({
-  logger: false,
+  logger: true,
 });
 
-// server.use(cors())
+server.register(cors, {
+  origin: "*"
+})
 
 server.addHook("onRequest", (req, reply, done) => {
   req.log.info(
